@@ -1,0 +1,1 @@
+print("A terça parte é:", float(input("Entre com um numero com ponto: "))/3)
