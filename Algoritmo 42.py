@@ -1,11 +1,11 @@
 import math as m
 a = input("Digite um ângulo em graus: ")
 r = m.radians(float(a))
-s, c, t = m.sin(r), m.cos(r), m.tan(r)
-sc, csc, ctg = 1 / c, 1 / s, 1 / t
+s, c, t = round(m.sin(r), 5), round(m.cos(r), 5), round(m.tan(r), 5)
+sc, cs, ct = round(1 / c, 5), round(1 / s, 5), round (1 / t, 5)
 print("O seno é:", s)
 print("O cosseno é:", c)
 print("A tangente é:", t)
 print("A secante é:", sc)
-print("A cossecante é:", csc)
-print("A cotangente é:", ctg)
+print("A cossecante é:", cs)
+print("A cotangente é:", ct)

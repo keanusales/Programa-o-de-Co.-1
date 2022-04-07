@@ -1,0 +1,5 @@
+n = input("Digite um número: ")
+if n % 10 == 0: print("Multiplo de 10!")
+elif n % 5 == 0: print("Multiplo de 5!")
+elif n % 2 == 0: print("Multiplo de 2!")
+else: print("Não é multiplo nem de 2, nem de 5, nem de 10.")
