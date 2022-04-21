@@ -1,74 +1,33 @@
 v = input("Digite o verbo regular no infinitivo: ")
-txt_1 = "O verbo {} conjugado no pretérito perfeito:"
-txt_2 = "O verbo {} conjugado no presente do indicativo:"
-txt_3 = "O verbo {} conjugado no futuro do presente:"
-def inv(texto):
-    return texto[::-1]
-v = inv(v) # Inverte o verbo p/ dar o replace 1 só vez
-if v[1] == "a" and v[0] == "r":
-    print("\n" + txt_1.format(v))
-    print("Eu", inv(v.replace(v[:2], "ie", 1)))
-    print("Tu", v.replace(v[len(v)-2:], "aste"))
-    print("Ele(a)", v.replace(v[len(v)-2:], "ou"))
-    print("Nós", v.replace(v[len(v)-2:], "amos"))
-    print("Vós", v.replace(v[len(v)-2:], "astes"))
-    print("Eles(as)", v.replace(v[len(v)-2:], "aram"))
-    print("\n" + txt_2.format(v))
-    print("Eu", v.replace(v[len(v)-2:], "o"))
-    print("Tu", v.replace(v[len(v)-2:], "as"))
-    print("Ele(a)", v.replace(v[len(v)-2:], "a"))
-    print("Nós", v.replace(v[len(v)-2:], "amos"))
-    print("Vós", v.replace(v[len(v)-2:], "ais"))
-    print("Eles(as)", v.replace(v[len(v)-2:], "am"))
-    print("\n" + txt_3.format(v))
-    print("Eu", v.replace(v[len(v)-2:], "arei"))
-    print("Tu", v.replace(v[len(v)-2:], "arás"))
-    print("Ele(a)", v.replace(v[len(v)-2:], "ará"))
-    print("Nós", v.replace(v[len(v)-2:], "aremos"))
-    print("Vós", v.replace(v[len(v)-2:], "areis"))
-    print("Eles(as)", v.replace(v[len(v)-2:], "arão"))
-elif v[len(v)-2] == "e" and v[len(v)-1] == "r":
-    print("\n" + txt_1.format(v))
-    print("Eu", v.replace(v[len(v)-2:], "i"))
-    print("Tu", v.replace(v[len(v)-2:], "este"))
-    print("Ele(a)", v.replace(v[len(v)-2:], "eu"))
-    print("Nós", v.replace(v[len(v)-2:], "emos"))
-    print("Vós", v.replace(v[len(v)-2:], "estes"))
-    print("Eles(as)", v.replace(v[len(v)-2:], "eram"))
-    print("\n" + txt_2.format(v))
-    print("Eu", v.replace(v[len(v)-2:], "o"))
-    print("Tu", v.replace(v[len(v)-2:], "es"))
-    print("Ele(a)", v.replace(v[len(v)-2:], "e"))
-    print("Nós", v.replace(v[len(v)-2:], "emos"))
-    print("Vós", v.replace(v[len(v)-2:], "eis"))
-    print("Eles(as)", v.replace(v[len(v)-2:], "em"))
-    print("\n" + txt_3.format(v))
-    print("Eu", v.replace(v[len(v)-2:], "erei"))
-    print("Tu", v.replace(v[len(v)-2:], "erás"))
-    print("Ele(a)", v.replace(v[len(v)-2:], "erá"))
-    print("Nós", v.replace(v[len(v)-2:], "eremos"))
-    print("Vós", v.replace(v[len(v)-2:], "ereis"))
-    print("Eles(as)", v.replace(v[len(v)-2:], "erão"))
-elif v[len(v)-2] == "i" and v[len(v)-1] == "r":
-    print("\n" + txt_1.format(v))
-    print("Eu", v.replace(v[len(v)-2:], "i"))
-    print("Tu", v.replace(v[len(v)-2:], "iste"))
-    print("Ele(a)", v.replace(v[len(v)-2:], "iu"))
-    print("Nós", v.replace(v[len(v)-2:], "imos"))
-    print("Vós", v.replace(v[len(v)-2:], "istes"))
-    print("Eles(as)", v.replace(v[len(v)-2:], "iram"))
-    print("\n" + txt_2.format(v))
-    print("Eu", v.replace(v[len(v)-2:], "o"))
-    print("Tu", v.replace(v[len(v)-2:], "es"))
-    print("Ele(a)", v.replace(v[len(v)-2:], "e"))
-    print("Nós", v.replace(v[len(v)-2:], "imos"))
-    print("Vós", v.replace(v[len(v)-2:], "is"))
-    print("Eles(as)", v.replace(v[len(v)-2:], "em"))
-    print("\n" + txt_3.format(v))
-    print("Eu", v.replace(v[len(v)-2:], "irei"))
-    print("Tu", v.replace(v[len(v)-2:], "irás"))
-    print("Ele(a)", v.replace(v[len(v)-2:], "irá"))
-    print("Nós", v.replace(v[len(v)-2:], "iremos"))
-    print("Vós", v.replace(v[len(v)-2:], "ireis"))
-    print("Eles(as)", v.replace(v[len(v)-2:], "irão"))
-else: print("Digite um verbo no infinitivo!")
+pa = ["Eu", "Tu", "Ele(a)", "Nós", "Vós", "Eles(as)"]
+if v[-2] == "a" and v[-1] == "r":
+    pr = ["ei", "aste", "ou", "amos", "astes", "aram"]
+    ps = ["o", "as", "a", "amos", "ais", "am"]
+    fu = ["arei", "arás", "ará", "aremos", "areis", "arão"]
+    print("\nO verbo {} no pretérito perfeito:".format(v))
+    for i in range(6): print(pa[i], v[:-2] + pr[i])
+    print("\nO verbo {} no presente do indicativo:".format(v))
+    for i in range(6): print(pa[i], v[:-2] + ps[i])
+    print("\nO verbo {} no futuro do presente:".format(v))
+    for i in range(6): print(pa[i], v[:-2] + fu[i])
+elif v[-2] == "e" and v[-1] == "r":
+    pr = ["i", "este", "eu", "emos", "estes", "eram"]
+    ps = ["o", "es", "e", "emos", "eis", "em"]
+    fu = ["erei", "erás", "erá", "eremos", "ereis", "erão"]
+    print("\nO verbo {} no pretérito perfeito:".format(v))
+    for i in range(6): print(pa[i], v[:-2] + pr[i])
+    print("\nO verbo {} no presente do indicativo:".format(v))
+    for i in range(6): print(pa[i], v[:-2] + ps[i])
+    print("\nO verbo {} no futuro do presente:".format(v))
+    for i in range(6): print(pa[i], v[:-2] + fu[i])
+elif v[-2] == "i" and v[-1] == "r":
+    pr = ["i", "iste", "iu", "imos", "istes", "iram"]
+    ps = ["o", "es", "e", "imos", "is", "em"]
+    fu = ["irei", "irás", "irá", "iremos", "ireis", "irão"]
+    print("\nO verbo {} no pretérito perfeito:".format(v))
+    for i in range(6): print(pa[i], v[:-2] + pr[i])
+    print("\nO verbo {} no presente do indicativo:".format(v))
+    for i in range(6): print(pa[i], v[:-2] + ps[i])
+    print("\nO verbo {} no futuro do presente:".format(v))
+    for i in range(6): print(pa[i], v[:-2] + fu[i])
+else: print("Digite um verbo regular no infinitivo!")
