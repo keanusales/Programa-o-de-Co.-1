@@ -11,7 +11,7 @@ while opção != 5:
     while opção not in [1, 2, 3, 4, 5]:
         try:
             os.system("cls")
-            print("------ MENU ------")
+            print(" ------ MENU ------ ")
             print("1 - Ler Nomes e Notas")
             print("2 - Média Geral")
             print("3 - Classificação")
@@ -23,7 +23,7 @@ while opção != 5:
         opção, erro = 0, True
         for i in range(n):
             os.system("cls")
-            nomes.insert(i, input("Digite o nome: "))
+            nomes.insert(i, str(input("Digite o nome: ")))
             while erro == True:
                 try:
                     erro = False
@@ -37,7 +37,7 @@ while opção != 5:
         for i in range(n):
             media = media + notas[i]
         print("Média Geral:", media/n)
-        sair = input("Pressione enter para sair! ")
+        input("Pressione enter para sair! ")
     elif opção == 3:
         opção = 0
         os.system("cls")
@@ -53,15 +53,15 @@ while opção != 5:
         print("Relação em ordem decrescente de nota:")
         for i in range(n):
             print("{} - Nome: {}\tNota: {}".format(i+1,nomes[i],notas[i]))
-        sair = input("Pressione enter para sair! ")
+        input("Pressione enter para sair! ")
     elif opção == 4:
         opção = 0
         os.system("cls")
-        def procura(nome):
+        def proc(nome):
             for i in range(n):
                 if nome == nomes[i]: return i
             return None
         nome = input("Digite o nome a ser procurado: ")
-        if procura(nome) == None: print("Não existe nome correspondente!")
-        else: print("Nome:", nomes[procura(nome)], "Nota:", notas[procura(nome)])
-        sair = input("Pressione enter para sair! ")
+        if proc(nome) == None: print("Não existe nome correspondente!")
+        else: print("Nome:", nomes[proc(nome)], "Nota:", notas[proc(nome)])
+        input("Pressione enter para sair! ")
