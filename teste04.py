@@ -1,3 +1,4 @@
+import os
 def ehana(x, y):
   if len(x) == len(y):
     x, y = list(x), list(y)
@@ -6,6 +7,7 @@ def ehana(x, y):
       if y[i] not in x: return False
     return True
   return False
+os.system("cls")
 a = input("Digite a 1ª palavra: ")
 b = input("Digite a 2ª palavra: ")
 if ehana(a, b) == True:
