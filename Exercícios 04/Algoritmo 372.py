@@ -1,26 +1,27 @@
 import os
+import itertools as tls
 v, a = [], 0
 for i in range(12):
     os.system("cls")
-    v.insert(i, input("Digite o {}º time: ".format(i+1)))
+    v.insert(i, input(f"Digite o {i+1}º time: "))
     while len(v[i]) == 0 or len(v[i]) > 20:
         os.system("cls")
-        print("O nome tem que ter de 0 a 20 caracteres.")
-        v.insert(i, input("Digite o {}º time: ".format(i+1)))
-    t = 20 - len(v[i])
-    for j in range(t): v[i] = v[i] + " "
+        print("O nome deve ter de 0 a 20 caracteres.")
+        v.insert(i, input(f"Digite o {i+1}º time: "))
 while a not in ['1', '2']:
-    os.system("cls")
-    print("Todos contra Todos (1) / Mata-Mata (2)")
-    a = input("Escolha um dos 2 modos de jogo: ")
+    try:
+        os.system("cls")
+        print("Todos contra Todos (1) / Mata-Mata (2)")
+        a = input("Escolha um dos 2 modos de jogo: ")
+    except ValueError: a = 0
 os.system("cls")
 if a == 1:
-    print("Rodada Simples:")
-    for i in range(10):
-        for j in range(i+1, 11):
-            print(v[i], "\t", v[j])
+    print("Todos contra Todos:")
+    for i in range(11):
+        for j in range(i+1, 12):
+            print(f"{v[i]} vs {v[j]}")
 else:
-    print("Rodada Simples:")
-    for i in range(10):
-        for j in range(i+1, 11):
-            print(v[i], "\t", v[j])
+    p = list(tls.permutations(v, 2))
+    print("Mata-Mata das Equipes:")
+    for i in range(132):
+        print(f"{p[i][0]} vs {p[i][1]}")
