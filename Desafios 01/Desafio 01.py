@@ -1,12 +1,13 @@
 import re; exit = []; y = []; gfc = {}
 from matplotlib.pyplot import plot as plt
 from matplotlib.pyplot import show as shw
-txt1 = open("txt1.txt", encoding = "utf-8").read().split()
-txt2 = open("txt2.txt", encoding = "utf-8").read().split()
-stpw = open("stpw.txt", encoding = "utf-8").read().split()
-open("txt1.txt", encoding = "utf-8").close()
-open("txt2.txt", encoding = "utf-8").close()
-open("stpw.txt", encoding = "utf-8").close()
+a = open("txt1.txt", encoding = "utf-8")
+b = open("txt2.txt", encoding = "utf-8")
+c = open("stpw.txt", encoding = "utf-8")
+txt1 = a.read().split()
+txt2 = b.read().split()
+stpw = c.read().split()
+a.close(); b.close(); c.close
 for i in range(len(txt1)):
     if txt1[i] not in stpw: exit.append(txt1[i])
 for i in range(len(txt2)):
@@ -19,4 +20,4 @@ for i in range(len(exit)):
     else: gfc[exit[i]] = 1
 x = sorted(gfc, key = gfc.get, reverse = True)
 for i in x: y.append(gfc[i])
-plt(x[:7], y[:7], color = "k"); shw()
+plt(x[:10], y[:10], color = "k"); shw()
