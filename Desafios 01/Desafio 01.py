@@ -6,7 +6,7 @@ c = open("stop.txt", encoding = "utf-8")
 txt1 = a.read().split()
 txt2 = b.read().split()
 stop = c.read().split()
-a.close(); b.close(); c.close
+a.close(); b.close(); c.close()
 for i in range(len(stop)):
   while stop[i] in txt1: txt1.remove(stop[i])
 for i in range(len(stop)):
