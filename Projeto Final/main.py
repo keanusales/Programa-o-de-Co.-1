@@ -8,7 +8,6 @@ cur.execute("""create table if not exists produtos
 
 os.system("cls||clear")
 while True:
-
   opcao = 0
   while not opcao:
     print('''

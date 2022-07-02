@@ -1,5 +1,7 @@
 # Import de bibliotecas necessárias
-import os, sqlite3 as sql
+from os import system
+import sqlite3 as sql, csv
+from dicionarios import reg, forn, dados, quali
 
 data = []
 
@@ -7,9 +9,7 @@ data = []
 
 # 1 - Cadastrar um produto
 def cadastro(con):
-  from dicionarios import reg, forn, dados, quali
-
-  os.system("cls||clear")
+  system("cls||clear")
   print("Insira os valores necessários para o cadastro de um novo produto")
   dados['cod'] = input("Código: ")
   dados['produto'] = input("Nome: ")
@@ -25,7 +25,6 @@ def cadastro(con):
   dados['lote'] = input("Insira o lote do produto: ")
   dados['valid'] = input("Insira o validade do produto: ")
   dados['qtd_vendas'] = input("Quantidade de vendas: ")
-
   try:
     insert = "insert into produtos values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
     con.execute(insert, (dados['cod'], dados['produto'], dados['preco'],
@@ -33,14 +32,15 @@ def cadastro(con):
       dados['fornecedor'], dados['lote'], dados['valid'], dados['qtd_vendas']))
     con.commit()
   except sql.Error as error:
-    os.system("cls||clear")
+    system("cls||clear")
     print(f"Ocorreu o seguinte erro no sqlite: {error}")
   else:
-    os.system("cls||clear")
+    system("cls||clear")
     print("A tarefa foi executada com sucesso.")
 
+# 2 - Modificar um produto
 def modificacao(con):
-  os.system("cls||clear")
+  system("cls||clear")
   print('''
     [1] Produto
     [2] Preço
@@ -106,17 +106,18 @@ def modificacao(con):
       con.execute(f"update produtos set qtd_vendas = {mod} where cod = {codigo}")
       con.commit()
   except sql.Error as error:
-    os.system("cls||clear")
+    system("cls||clear")
     print(f"Ocorreu o seguinte erro no sqlite: {error}\n\n")
   else:
-    os.system("cls||clear")
+    system("cls||clear")
     print("A tarefa foi executada com sucesso.\n\n")
 
+# 3 - Listar os produtos disponíveis
 def listagem(cur):
   data.clear()
   for row in cur.execute("select * from produtos order by cod"):
     data.append(row)
-    os.system("cls||clear")
+    system("cls||clear")
     print("A lista de produtos disponíveis:")
     for linha in data:
       print(f"\n\nCódigo: {linha[0]}, Nome: {linha[1]},"\
@@ -126,13 +127,14 @@ def listagem(cur):
         f" Lote: {linha[8]}, Validade: {linha[9]}"\
         f" Quantidade de produtos vendidos: {linha[10]}\n\n")  
 
+# 4 - Busca Conceitual do produto
 def busca_conceitual(cur):
   data.clear()
-  os.system("cls||clear")
+  system("cls||clear")
   busca = input("Insira o termo da busca: ")
   for row in cur.execute("select * from produtos order by cod"):
     data.append(row)
-  os.system("cls||clear")
+  system("cls||clear")
   print("O(s) resultado(s) da busca:")
   for linha in data:
     for coluna in linha:
@@ -145,13 +147,14 @@ def busca_conceitual(cur):
           f" Quantidade de produtos vendidos: {linha[10]}\n\n")
         break
 
+# 5 - Busca pelo código do produto
 def visualizar_codigo(cur):
   data.clear()
-  os.system("cls||clear")
+  system("cls||clear")
   codigo = int(input("Insira o código a ser procurado: "))
   for row in cur.execute("select * from produtos order by cod"):
     data.append(row)
-  os.system("cls||clear")
+  system("cls||clear")
   for linha in data:
     if codigo == linha[0]:
       print("O resultado da busca pelo código:")
@@ -162,15 +165,49 @@ def visualizar_codigo(cur):
         f" Lote: {linha[8]}, Validade: {linha[9]}"\
         f" Quantidade de produtos vendidos: {linha[10]}\n\n")
 
+# 6 - Deletar um produto da db
 def deletar_produto(con):
-  os.system("cls||clear")
+  system("cls||clear")
   codigo = input("Insira o código do produto a ser deletado: ")
   try:
     con.execute(f"delete from produtos where cod = {codigo}")
     con.commit()
   except sql.Error as error:
-    os.system("cls||clear")
+    system("cls||clear")
     print(f"Ocorreu o seguinte erro no sqlite: {error}")
   else:
-    os.system("cls||clear")
+    system("cls||clear")
     print("A tarefa foi executada com sucesso.")
+
+# 7 - Importar uma db de csv para sqlite
+def csv_to_sql(arquivo):
+  con = sql.connect("database.db"); cur = con.cursor()
+  cur.execute("""create table if not exists produtos
+    (cod txt, nome txt, preco real, qtd_adquirida integer, regiao txt, nota integer,
+    fabricante txt, fornecedor txt, lote txt, valid txt, qtd_vendas integer)""")
+  with open(arquivo, encoding = "utf-8") as file:
+    acertos, erros = 0, 0
+    tabela = list(csv.reader(file, delimiter = ","))
+    for linha in tabela:
+      dados['cod'] = linha[0]
+      dados['produto'] = linha[1]
+      dados['preco'] = linha[2]
+      dados['qtd_adquirida'] = linha[3]
+      dados['regiao'] = linha[4]
+      dados['nota'] = linha[5]
+      dados['fabricante'] = linha[6]
+      dados['fornecedor'] = linha[7]
+      dados['lote'] = linha[8]
+      dados['valid'] = linha[9]
+      dados['qtd_vendas'] = linha[10]
+      try:
+        insert = "insert into produtos values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
+        con.execute(insert, (dados['cod'], dados['produto'], dados['preco'],
+          dados['qtd_adquirida'], dados['regiao'], dados['nota'], dados['fabricante'],
+          dados['fornecedor'], dados['lote'], dados['valid'], dados['qtd_vendas']))
+        con.commit()
+      except sql.Error as error:
+        index = tabela.index(linha) + 1; erros += 1
+        print(f"Ocorreu o erro {error} no sqlite ao armazenar na linha {index}")
+      else: acertos += 1
+  return acertos, erros
