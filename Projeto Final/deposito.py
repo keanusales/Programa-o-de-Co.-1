@@ -1,6 +1,6 @@
 # Import de bibliotecas necessárias
 from os import system
-import sqlite3 as sql, csv
+import sqlite3 as sql
 from dicionarios import reg, forn, dados, quali
 
 data = []
@@ -178,36 +178,3 @@ def deletar_produto(con):
   else:
     system("cls||clear")
     print("A tarefa foi executada com sucesso.")
-
-# 7 - Importar uma db de csv para sqlite
-def csv_to_sql(arquivo):
-  con = sql.connect("database.db"); cur = con.cursor()
-  cur.execute("""create table if not exists produtos
-    (cod txt, nome txt, preco real, qtd_adquirida integer, regiao txt, nota integer,
-    fabricante txt, fornecedor txt, lote txt, valid txt, qtd_vendas integer)""")
-  with open(arquivo, encoding = "utf-8") as file:
-    acertos, erros = 0, 0
-    tabela = list(csv.reader(file, delimiter = ","))
-    for linha in tabela:
-      dados['cod'] = linha[0]
-      dados['produto'] = linha[1]
-      dados['preco'] = linha[2]
-      dados['qtd_adquirida'] = linha[3]
-      dados['regiao'] = linha[4]
-      dados['nota'] = linha[5]
-      dados['fabricante'] = linha[6]
-      dados['fornecedor'] = linha[7]
-      dados['lote'] = linha[8]
-      dados['valid'] = linha[9]
-      dados['qtd_vendas'] = linha[10]
-      try:
-        insert = "insert into produtos values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
-        con.execute(insert, (dados['cod'], dados['produto'], dados['preco'],
-          dados['qtd_adquirida'], dados['regiao'], dados['nota'], dados['fabricante'],
-          dados['fornecedor'], dados['lote'], dados['valid'], dados['qtd_vendas']))
-        con.commit()
-      except sql.Error as error:
-        index = tabela.index(linha) + 1; erros += 1
-        print(f"Ocorreu o erro {error} no sqlite ao armazenar na linha {index}")
-      else: acertos += 1
-  return acertos, erros
