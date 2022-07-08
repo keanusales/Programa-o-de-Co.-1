@@ -7,8 +7,21 @@ reg = {1: "Acre", 2: "Alagoas", 3: "Amapá", 4: "Amazonas", 5: "Bahia", 6: "Cear
 
 forn = {1: "AliExpress", 2: "Amazon", 3: "Alibaba", 4: "Mercado Livre", 5: "Yakao", 6: "Megafort", 7: "iOffer"}
 
-dados = {'cod': "", 'produto': "", 'preco': "", 'qtd_adquirida': "", 'regiao': "",
-  'nota': "", 'fabricante': "", 'fornecedor': "", 'lote': "",'valid': "", 'qtd_vendas': ""}
+dados = {'cod': "", 'prod': "", 'preco': "", 'qtd_adquirida': "", 'regiao': "",
+  'qualidade': "", 'fabricante': "", 'fornecedor': "", 'lote': "",'valid': "", 'qtd_vendas': ""}
 
 quali = {1: "Péssima qualidade", 2: "Baixa qualidade", 3: "Média qualidade",
   4: "Boa qualidade", 5: "Ótima qualidade"}
+
+types = {
+  1: "update produtos set prod = ? where cod = ?",
+  2: "update produtos set preco = ? where cod = ?",
+  3: "update produtos set qtd_adquirida = ? where cod = ?",
+  4: "update produtos set regiao = ? where cod = ?",
+  5: "update produtos set qualidade = ? where cod = ?",
+  6: "update produtos set fabricante = ? where cod = ?",
+  7: "update produtos set fornecedor = ? where cod = ?",
+  8: "update produtos set lote = ? where cod = ?",
+  9: "update produtos set validade = ? where cod = ?",
+  10: "update produtos set qtd_vendida = ? where cod = ?"
+}

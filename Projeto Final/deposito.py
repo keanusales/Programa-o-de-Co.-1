@@ -1,7 +1,6 @@
 # Import de bibliotecas necessárias
-from os import system
-import sqlite3 as sql
-from dicionarios import reg, forn, dados, quali
+from os import system; import sqlite3 as sql
+from dicionarios import dados, reg, forn, quali, types
 
 data = []
 
@@ -10,7 +9,7 @@ data = []
 # 1 - Cadastrar um produto
 def cadastro(con):
   system("cls||clear")
-  print("Insira os valores necessários para o cadastro de um novo produto")
+  print("Insira os valores necessários para o cadastro do novo produto:")
   dados['cod'] = input("Código: ")
   dados['produto'] = input("Nome: ")
   dados['preco'] = input("Preço: R$")
@@ -18,7 +17,7 @@ def cadastro(con):
   for key, value in reg.items(): print(f"[{key}] {value}")
   dados['regiao'] = reg[int(input("Digite sua escolha: "))]
   for key, value in quali.items(): print(f"[{key}] {value}")
-  dados['nota'] = quali[int(input("Digite sua Escolha: "))]
+  dados['qualidade'] = quali[int(input("Digite sua Escolha: "))]
   dados['fabricante'] = input("Fabricante: ")
   for key, value in forn.items(): print(f"[{key}] {value}")
   dados['fornecedor'] = forn[int(input("Digite sua escolha: "))]
@@ -26,9 +25,9 @@ def cadastro(con):
   dados['valid'] = input("Insira o validade do produto: ")
   dados['qtd_vendas'] = input("Quantidade de vendas: ")
   try:
-    insert = "insert into produtos values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);"
-    con.execute(insert, (dados['cod'], dados['produto'], dados['preco'],
-      dados['qtd_adquirida'], dados['regiao'], dados['nota'], dados['fabricante'],
+    insert = "insert into produtos values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+    con.execute(insert, (dados['cod'], dados['prod'], dados['preco'],
+      dados['qtd_adquirida'], dados['regiao'], dados['qualidade'], dados['fabricante'],
       dados['fornecedor'], dados['lote'], dados['valid'], dados['qtd_vendas']))
     con.commit()
   except sql.Error as error:
@@ -40,77 +39,41 @@ def cadastro(con):
 
 # 2 - Modificar um produto
 def modificacao(con):
-  system("cls||clear")
-  print('''
-    [1] Produto
-    [2] Preço
-    [3] Quantidade adquirida
-    [4] Região
-    [5] Nota
-    [6] Fabricante
-    [7] Fornecedor
-    [8] Lote
-    [9] Validade
-    [10] Quantidade de produtos vendidos
-    ''')
-  tipo = int(input("\n\nDigite o tipo do dado a ser alterado: "))
-  try:
-    if tipo == 1:
-      codigo = input("Insira o código do produto: ")
-      mod = input("Digite o novo nome do produto: ")
-      con.execute(f"update produtos set prod = {mod} where cod = {codigo}")
-      con.commit()
-    elif tipo == 2:
-      codigo = input("Insira o código do produto: ")
-      mod = input("Digite o novo preço do produto: ")
-      con.execute(f"update produtos set preco = {mod} where cod = {codigo}")
-      con.commit()
-    elif tipo == 3:
-      codigo = input("Insira o código do produto: ")
-      mod = input("Digite a nova nova quantidade adquirida do produto: ")
-      con.execute(f"update produtos set qtd_adquirida = {mod} where cod = {codigo}")
-      con.commit()
-    elif tipo == 4:
-      codigo = input("Insira o código do produto: ")
-      mod = input("Digite a nova região do produto: ")
-      con.execute(f"update produtos set regiao = {mod} where cod = {codigo}")
-      con.commit()
-    elif tipo == 5:
-      codigo = input("Insira o código do produto: ")
-      mod = input("Digite a nova nota do produto: ")
-      con.execute(f"update produtos set nota = {mod} where cod = {codigo}")
-      con.commit()
-    elif tipo == 6:
-      codigo = input("Insira o código do produto: ")
-      mod = input("Digite o novo fabricante do produto: ")
-      con.execute(f"update produtos set fabricante = {mod} where cod = {codigo}")
-      con.commit()
-    elif tipo == 7:
-      codigo = input("Insira o código do produto: ")
-      mod = input("Digite o novo fornecedor do produto: ")
-      con.execute(f"update produtos set fornecedor = {mod} where cod = {codigo}")
-      con.commit()
-    elif tipo == 8:
-      codigo = input("Insira o código do produto: ")
-      mod = input("Digite o novo lote do produto: ")
-      con.execute(f"update produtos set lote = {mod} where cod = {codigo}")
-      con.commit()
-    elif tipo == 9:
-      codigo = input("Insira o código do produto: ")
-      mod = input("Digite a nova validade do produto: ")
-      con.execute(f"update produtos set valid = {mod} where cod = {codigo}")
-      con.commit()
-    elif tipo == 10:
-      codigo = input("Insira o código do produto: ")
-      mod = input("Digite a nova quantidade de produtos vendidos: ")
-      con.execute(f"update produtos set qtd_vendas = {mod} where cod = {codigo}")
-      con.commit()
-  except sql.Error as error:
-    system("cls||clear")
-    print(f"Ocorreu o seguinte erro no sqlite: {error}\n\n")
-  else:
-    system("cls||clear")
-    print("A tarefa foi executada com sucesso.\n\n")
+  escolha = 0
+  while not escolha:
+    try:
+      system("cls||clear")
+      print("[0] - Código"\
+        "\n[1] - Produto"\
+        "\n[2] - Preço"\
+        "\n[3] - Quantidade adquirida"\
+        "\n[4] - Região"\
+        "\n[5] - Qualidade"\
+        "\n[6] - Fabricante"\
+        "\n[7] - Fornecedor"\
+        "\n[8] - Lote"\
+        "\n[9] - Validade"\
+        "\n[10] - Quantidade vendida")
+      escolha = int(input("\nDigite o tipo do dado a ser alterado: "))
+    except ValueError:
+      escolha = 0; system("cls||clear")
+      print("Entrada Inválida. Entre com um inteiro.")
+    else:
+      if 1 <= escolha <= 10:
+        try:
+          codigo = input("Insira o código do produto: ")
+          mod = input("Digite a modificação a ser feita: ")
+          con.execute(types[escolha], (mod, codigo))
+          con.commit()
+        except sql.Error as error:
+          system("cls||clear")
+          print(f"Ocorreu o seguinte erro no sqlite: {error}\n")
+        else:
+          system("cls||clear")
+          print("A tarefa foi executada com sucesso.\n")
+      else:
+        escolha = 0; system("cls||clear")
+        print("Digite um valor especificado!")
 
 # 3 - Listar os produtos disponíveis
 def listagem(cur):
@@ -120,12 +83,12 @@ def listagem(cur):
     system("cls||clear")
     print("A lista de produtos disponíveis:")
     for linha in data:
-      print(f"\n\nCódigo: {linha[0]}, Nome: {linha[1]},"\
+      print(f"Código: {linha[0]}, Nome: {linha[1]},"\
         f" Preço: R${linha[2]}, Quantidade adquirida: {linha[3]},"\
-        f" Região: {linha[4]}, Nota: {linha[5]}"\
-        f" Fabricante: {linha[6]}, Fornecedor: {linha[7]}"\
-        f" Lote: {linha[8]}, Validade: {linha[9]}"\
-        f" Quantidade de produtos vendidos: {linha[10]}\n\n")  
+        f" Região: {linha[4]}, Qualidade: {linha[5]},"\
+        f" Fabricante: {linha[6]}\nFornecedor: {linha[7]},"\
+        f" Lote: {linha[8]}, Validade: {linha[9]},"\
+        f" Quantidade vendida: {linha[10]}\n")
 
 # 4 - Busca Conceitual do produto
 def busca_conceitual(cur):
@@ -139,12 +102,12 @@ def busca_conceitual(cur):
   for linha in data:
     for coluna in linha:
       if busca in str(coluna):
-        print(f"\n\nCódigo: {linha[0]}, Nome: {linha[1]},"\
+        print(f"Código: {linha[0]}, Nome: {linha[1]},"\
           f" Preço: R${linha[2]}, Quantidade adquirida: {linha[3]},"\
-          f" Região: {linha[4]}, Nota: {linha[5]}"\
-          f" Fabricante: {linha[6]}, Fornecedor: {linha[7]}"\
-          f" Lote: {linha[8]}, Validade: {linha[9]}"\
-          f" Quantidade de produtos vendidos: {linha[10]}\n\n")
+          f" Região: {linha[4]}, Qualidade: {linha[5]},"\
+          f" Fabricante: {linha[6]}\nFornecedor: {linha[7]},"\
+          f" Lote: {linha[8]}, Validade: {linha[9]},"\
+          f" Quantidade vendida: {linha[10]}\n")
         break
 
 # 5 - Busca pelo código do produto
@@ -158,12 +121,12 @@ def visualizar_codigo(cur):
   for linha in data:
     if codigo == linha[0]:
       print("O resultado da busca pelo código:")
-      print(f"\n\nCódigo: {linha[0]}, Nome: {linha[1]},"\
+      print(f"Código: {linha[0]}, Nome: {linha[1]},"\
         f" Preço: R${linha[2]}, Quantidade adquirida: {linha[3]},"\
-        f" Região: {linha[4]}, Nota: {linha[5]}"\
-        f" Fabricante: {linha[6]}, Fornecedor: {linha[7]}"\
-        f" Lote: {linha[8]}, Validade: {linha[9]}"\
-        f" Quantidade de produtos vendidos: {linha[10]}\n\n")
+        f" Região: {linha[4]}, Qualidade: {linha[5]},"\
+        f" Fabricante: {linha[6]}\nFornecedor: {linha[7]},"\
+        f" Lote: {linha[8]}, Validade: {linha[9]},"\
+        f" Quantidade vendida: {linha[10]}\n")
 
 # 6 - Deletar um produto da db
 def deletar_produto(con):
