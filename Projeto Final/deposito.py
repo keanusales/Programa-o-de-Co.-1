@@ -80,6 +80,7 @@ def listagem(cur):
   data.clear()
   for row in cur.execute("select * from produtos order by cod"):
     data.append(row)
+  if len(data) != 0:
     system("cls||clear")
     print("A lista de produtos disponíveis:")
     for linha in data:
@@ -89,44 +90,55 @@ def listagem(cur):
         f" Fabricante: {linha[6]}\nFornecedor: {linha[7]},"\
         f" Lote: {linha[8]}, Validade: {linha[9]},"\
         f" Quantidade vendida: {linha[10]}\n")
+  else:
+    system("cls||clear")
+    print("Não há produtos disponíveis!")
 
 # 4 - Busca Conceitual do produto
 def busca_conceitual(cur):
   data.clear()
-  system("cls||clear")
-  busca = input("Insira o termo da busca: ")
   for row in cur.execute("select * from produtos order by cod"):
     data.append(row)
-  system("cls||clear")
-  print("O(s) resultado(s) da busca:")
-  for linha in data:
-    for coluna in linha:
-      if busca in str(coluna):
+  if len(data) != 0:
+    system("cls||clear")
+    busca = input("Insira o termo da busca: ")
+    system("cls||clear")
+    print("O(s) resultado(s) da busca:")
+    for linha in data:
+      for coluna in linha:
+        if busca in str(coluna):
+          print(f"Código: {linha[0]}, Nome: {linha[1]},"\
+            f" Preço: R${linha[2]}, Quantidade adquirida: {linha[3]},"\
+            f" Região: {linha[4]}, Qualidade: {linha[5]},"\
+            f" Fabricante: {linha[6]}\nFornecedor: {linha[7]},"\
+            f" Lote: {linha[8]}, Validade: {linha[9]},"\
+            f" Quantidade vendida: {linha[10]}\n")
+          break
+  else:
+    system("cls||clear")
+    print("Não há produtos disponíveis!")
+
+# 5 - Busca pelo código do produto
+def visualizar_codigo(cur):
+  data.clear()
+  for row in cur.execute("select * from produtos order by cod"):
+    data.append(row)
+  if len(data) != 0:
+    system("cls||clear")
+    codigo = int(input("Insira o código a ser procurado: "))
+    system("cls||clear")
+    for linha in data:
+      if codigo == linha[0]:
+        print("O resultado da busca pelo código:")
         print(f"Código: {linha[0]}, Nome: {linha[1]},"\
           f" Preço: R${linha[2]}, Quantidade adquirida: {linha[3]},"\
           f" Região: {linha[4]}, Qualidade: {linha[5]},"\
           f" Fabricante: {linha[6]}\nFornecedor: {linha[7]},"\
           f" Lote: {linha[8]}, Validade: {linha[9]},"\
           f" Quantidade vendida: {linha[10]}\n")
-        break
-
-# 5 - Busca pelo código do produto
-def visualizar_codigo(cur):
-  data.clear()
-  system("cls||clear")
-  codigo = int(input("Insira o código a ser procurado: "))
-  for row in cur.execute("select * from produtos order by cod"):
-    data.append(row)
-  system("cls||clear")
-  for linha in data:
-    if codigo == linha[0]:
-      print("O resultado da busca pelo código:")
-      print(f"Código: {linha[0]}, Nome: {linha[1]},"\
-        f" Preço: R${linha[2]}, Quantidade adquirida: {linha[3]},"\
-        f" Região: {linha[4]}, Qualidade: {linha[5]},"\
-        f" Fabricante: {linha[6]}\nFornecedor: {linha[7]},"\
-        f" Lote: {linha[8]}, Validade: {linha[9]},"\
-        f" Quantidade vendida: {linha[10]}\n")
+  else:
+    system("cls||clear")
+    print("Não há produtos disponíveis!")
 
 # 6 - Deletar um produto da db
 def deletar_produto(con):
